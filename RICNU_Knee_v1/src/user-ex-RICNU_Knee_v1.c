@@ -63,17 +63,17 @@ void init_ricnu_knee(void)
 	setBoardID(SLAVE_ID);
 
 	//FlexSEA-Execute setup:
-	//Example:	ctrl.active_ctrl = CTRL_OPEN;	//Open controller
+	//Example:	ctrl[0].active_ctrl = CTRL_OPEN;	//Open controller
 	//Example: motor_open_speed_1(0);			//0% PWM
-	ctrl.active_ctrl = CTRL_OPEN;	//Position controller
+	ctrl[0].active_ctrl = CTRL_OPEN;	//Position controller
 	motor_open_speed_1(0);			//0% PWM
 	#if(MOTOR_COMMUT == COMMUT_BLOCK)
 	Coast_Brake_Write(1);			//Brake (rather than Coast)
 	#endif
 
 	//Position PID gains:
-	//ctrl.position.gain.P_KP = 22;
-	//ctrl.position.gain.P_KI = 5;
+	//ctrl[0].position.gain.P_KP = 22;
+	//ctrl[0].position.gain.P_KI = 5;
 
 	//Starts off:
 	LED_R_Write(1);
@@ -121,18 +121,18 @@ void ricnu_knee_fsm(void)
 		case 0:
 			//Put some code here...
 			//Example: motor_open_speed_1(85);			//0% PWM
-			ctrl.position.posi = tmp_posi;
-			ctrl.position.posf = tmp_posf;
-			ctrl.position.spdm = tmp_spdm;
-			ctrl.position.acc = tmp_acc;
+			ctrl[0].position.posi = tmp_posi;
+			ctrl[0].position.posf = tmp_posf;
+			ctrl[0].position.spdm = tmp_spdm;
+			ctrl[0].position.acc = tmp_acc;
 			steps = trapez_gen_motion_1(tmp_posi, tmp_posf, tmp_spdm, tmp_acc);
 			state = 2;
 			break;
 		case 1:
-			ctrl.position.posi = tmp_posi;
-			ctrl.position.posf = tmp_posf;
-			ctrl.position.spdm = tmp_spdm;
-			ctrl.position.acc = tmp_acc;
+			ctrl[0].position.posi = tmp_posi;
+			ctrl[0].position.posf = tmp_posf;
+			ctrl[0].position.spdm = tmp_spdm;
+			ctrl[0].position.acc = tmp_acc;
 			steps = trapez_gen_motion_1(tmp_posi, tmp_posf, tmp_spdm, tmp_acc);
 
 			time = -1000;

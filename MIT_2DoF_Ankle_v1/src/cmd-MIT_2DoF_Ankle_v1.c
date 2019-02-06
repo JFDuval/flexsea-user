@@ -124,7 +124,7 @@ void tx_cmd_ankle2dof_w(uint8_t *shBuf, uint8_t *cmd, uint8_t *cmdType, \
 		SPLIT_16(read_analog(1), shBuf, &index);
 
 		SPLIT_32((uint32_t)(*exec1.enc_ang), shBuf, &index);
-		SPLIT_16((uint16_t)ctrl.current.actual_val, shBuf, &index);
+		SPLIT_16((uint16_t)ctrl[0].current.actual_val, shBuf, &index);
 
 		shBuf[index++] = safety_cop.v_vb;
 		shBuf[index++] = safety_cop.v_vg;
@@ -167,16 +167,16 @@ void rx_cmd_ankle2dof_rw(uint8_t *buf, uint8_t *info)
 		slave = buf[index++];
 
 		//Update controller:
-		control_strategy(buf[index++]);
+		control_strategy(buf[index++], 0);
 
 		//Only change the setpoint if we are in current control mode:
-		if(ctrl.active_ctrl == CTRL_CURRENT)
+		if(ctrl[0].active_ctrl == CTRL_CURRENT)
 		{
 			index = P_DATA1+2;
 			tmp_wanted_current = (int16_t) REBUILD_UINT16(buf, &index);
-			ctrl.current.setpoint_val = tmp_wanted_current;
+			ctrl[0].current.setpoint_val = tmp_wanted_current;
 		}
-		else if(ctrl.active_ctrl == CTRL_OPEN)
+		else if(ctrl[0].active_ctrl == CTRL_OPEN)
 		{
 			index = P_DATA1+4;
 			tmp_open_spd = (int16_t) REBUILD_UINT16(buf, &index);;

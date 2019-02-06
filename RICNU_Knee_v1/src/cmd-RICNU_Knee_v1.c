@@ -155,7 +155,7 @@ void tx_cmd_ricnu_w(uint8_t *shBuf, uint8_t *cmd, uint8_t *cmdType, \
 			#endif
 			SPLIT_32((uint32_t)(*exec1.enc_ang), shBuf, &index);
 			SPLIT_32((uint32_t)as5048b.ang_abs_clks, shBuf, &index);
-			SPLIT_16((uint16_t)ctrl.current.actual_val, shBuf, &index);
+			SPLIT_16((uint16_t)ctrl[0].current.actual_val, shBuf, &index);
 			SPLIT_16((uint16_t)exec1.sine_commut_pwm, shBuf, &index);
 			//(24 bytes)
 		}
@@ -431,41 +431,41 @@ void rx_cmd_ricnu_Action1(uint8_t controller, int32_t setpoint, uint8_t setGains
 	#ifdef BOARD_TYPE_FLEXSEA_EXECUTE
 
 	//Update controller (if needed):
-	control_strategy(controller);
+	control_strategy(controller, 0);
 
 	//Only change the setpoint if we are in current control mode:
-	if(ctrl.active_ctrl == CTRL_CURRENT)
+	if(ctrl[0].active_ctrl == CTRL_CURRENT)
 	{
-		ctrl.current.setpoint_val = setpoint;
+		ctrl[0].current.setpoint_val = setpoint;
 		if (setGains == CHANGE)
 		{
-			ctrl.current.gain.g0 = g0;
-			ctrl.current.gain.g1 = g1;
+			ctrl[0].current.gain.g0 = g0;
+			ctrl[0].current.gain.g1 = g1;
 		}
 	}
-	else if(ctrl.active_ctrl == CTRL_OPEN)
+	else if(ctrl[0].active_ctrl == CTRL_OPEN)
 	{
 		motor_open_speed_1(setpoint);
 	}
-	else if(ctrl.active_ctrl == CTRL_POSITION)
+	else if(ctrl[0].active_ctrl == CTRL_POSITION)
 	{
-		ctrl.position.setp = setpoint;
+		ctrl[0].position.setp = setpoint;
 		if (setGains == CHANGE)
 		{
-			ctrl.position.gain.g0 = g0;
-			ctrl.position.gain.g1 = g1;
-			ctrl.position.gain.g2 = g2;
+			ctrl[0].position.gain.g0 = g0;
+			ctrl[0].position.gain.g1 = g1;
+			ctrl[0].position.gain.g2 = g2;
 		}
 	}
-	else if (ctrl.active_ctrl == CTRL_IMPEDANCE)
+	else if (ctrl[0].active_ctrl == CTRL_IMPEDANCE)
 	{
-		ctrl.impedance.setpoint_val = setpoint;
+		ctrl[0].impedance.setpoint_val = setpoint;
 		if (setGains == CHANGE)
 		{
-			ctrl.impedance.gain.g0 = g0;
-			ctrl.impedance.gain.g1 = g1;
-			ctrl.current.gain.g0 = g2;
-			ctrl.current.gain.g1 = g3;
+			ctrl[0].impedance.gain.g0 = g0;
+			ctrl[0].impedance.gain.g1 = g1;
+			ctrl[0].current.gain.g0 = g2;
+			ctrl[0].current.gain.g1 = g3;
 		}
 	}
 

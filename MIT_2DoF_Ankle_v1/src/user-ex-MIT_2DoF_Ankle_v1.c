@@ -62,15 +62,15 @@ void init_ankle_2dof(void)
 	setBoardID(SLAVE_ID);
 
     //Controller setup:
-    ctrl.active_ctrl = CTRL_OPEN;   //Position controller
+    ctrl[0].active_ctrl = CTRL_OPEN;   //Position controller
     motor_open_speed_1(0);              //0% PWM
 	#if(MOTOR_COMMUT == COMMUT_BLOCK)
     Coast_Brake_Write(1);               //Brake (regen)
 	#endif
 
     //Position PID gains - initially 0
-    ctrl.position.gain.P_KP = 0;
-    ctrl.position.gain.P_KI = 0;
+    ctrl[0].position.gain.P_KP = 0;
+    ctrl[0].position.gain.P_KI = 0;
 }
 
 //Knee Finite State Machine.
